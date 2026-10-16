@@ -1,14 +1,35 @@
-import { MessageCircle, Scissors, Star, Sparkles } from 'lucide-react';
-import type { Branch } from '@/data/locations';
-import { buildWhatsAppLink } from '@/data/locations';
+import { Calendar, Scissors, Star, Sparkles } from 'lucide-react';
+import { branches, type Branch } from '@/data/locations';
 import SpecialsCarousel from './SpecialsCarousel';
 
 interface HeroProps {
   branch: Branch;
+  onBook: () => void;
 }
 
-export default function Hero({ branch }: HeroProps) {
-  const whatsappLink = buildWhatsAppLink(branch);
+function heroSubtitle(branch: Branch): string {
+  if (branch.id === 'sunninghill') return 'Skin & Aesthetics Studio';
+  if (branch.id === 'parkhurst') return 'Aesthetics & Skin Clinic';
+  return 'Hair, Nails & Beauty';
+}
+
+function heroBody(branch: Branch): string {
+  if (branch.id === 'sunninghill') {
+    return 'nails, waxing, laser hair removal, iS Clinical facials, skin resurfacing, permanent makeup and body treatments.';
+  }
+  if (branch.id === 'parkhurst') {
+    return 'Korean head spa, hydrafacials, waxing, laser hair removal, slimming, pedicures and nails.';
+  }
+  if (branch.id === 'durban') {
+    return 'nails, waxing and threading, lashes and brows, hydra facials, microneedling, dermaplaning and specialised treatments.';
+  }
+  if (branch.pricesByConsultation) {
+    return 'hair, nails and beauty, with treatment prices confirmed at your consultation.';
+  }
+  return 'hair, nails and beauty — colour, balayage, keratin, nails and salon treatments.';
+}
+
+export default function Hero({ branch, onBook }: HeroProps) {
 
   return (
     <section id="top" className="relative overflow-hidden bg-gradient-to-b from-sage-50 via-white to-sage-50">
@@ -27,42 +48,31 @@ export default function Hero({ branch }: HeroProps) {
             <h1 className="font-serif text-4xl font-semibold leading-[1.15] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
               {branch.id === 'parkhurst' ? branch.name : 'Acrylic Game'}
               <span className="mt-1 block bg-gradient-to-r from-sage-700 to-sage-500 bg-clip-text text-transparent">
-                {branch.id === 'sunninghill'
-                  ? 'Skin &amp; Aesthetics Studio'
-                  : branch.id === 'parkhurst'
-                    ? 'Aesthetics &amp; Skin Clinic'
-                    : 'Hair &amp; Beauty Studio'}
+                {heroSubtitle(branch)}
               </span>
             </h1>
 
             <p className="mt-5 text-base leading-relaxed text-slate-700 sm:text-lg">
               {branch.isFlagship ? 'Rivonia Junction Flagship Branch' : `${branch.name} (${branch.area})`}
               {' — '}
-              {branch.id === 'sunninghill'
-                ? 'nails, waxing, laser hair removal, iS Clinical facials, skin resurfacing, permanent makeup & body treatments.'
-                : branch.id === 'parkhurst'
-                  ? 'Korean head spa, hydrafacials, waxing, laser hair removal, slimming, pedicures & nails.'
-                  : branch.id === 'durban'
-                    ? 'nails, waxing & threading, lashes & brows, hydra facials, microneedling, dermaplaning & specialised treatments.'
-                    : 'premium hair treatments, colour, balayage, keratin & natural hair care.'}
+              {heroBody(branch)}
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-green-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-green-600/20 transition-all hover:bg-green-700 hover:shadow-xl"
+              <button
+                type="button"
+                onClick={onBook}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 font-semibold text-white shadow-lg shadow-slate-900/20 transition-all hover:bg-slate-700 hover:shadow-xl"
               >
-                <MessageCircle className="h-5 w-5" />
-                Book on WhatsApp
-              </a>
+                <Calendar className="h-5 w-5" />
+                Book Now
+              </button>
               <a
                 href="#treatments"
                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-sage-400 bg-white px-7 py-3.5 font-semibold text-slate-800 transition-all hover:border-sage-600 hover:bg-sage-50"
               >
                 <Scissors className="h-5 w-5 text-sage-600" />
-                Explore {branch.id === 'sunninghill' || branch.id === 'parkhurst' ? 'Treatment Menu' : 'Treatment Menu'}
+                Explore Treatment Menu
               </a>
             </div>
 
@@ -100,7 +110,7 @@ export default function Hero({ branch }: HeroProps) {
               </div>
             </div>
             <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-900/5 sm:block">
-              <p className="font-serif text-2xl font-bold text-sage-600">5</p>
+              <p className="font-serif text-2xl font-bold text-sage-600">{branches.length}</p>
               <p className="text-xs font-medium text-slate-600">SA Branches</p>
             </div>
           </div>

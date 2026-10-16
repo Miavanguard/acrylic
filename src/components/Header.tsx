@@ -6,9 +6,10 @@ interface HeaderProps {
   branch: Branch;
   onChangeLocation: () => void;
   onOpenMobile: () => void;
+  onBook: () => void;
 }
 
-export default function Header({ logoUrl, branch, onChangeLocation, onOpenMobile }: HeaderProps) {
+export default function Header({ logoUrl, branch, onChangeLocation, onOpenMobile, onBook }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40">
       {/* Branch bar */}
@@ -49,7 +50,7 @@ export default function Header({ logoUrl, branch, onChangeLocation, onOpenMobile
             )}
             <div className="leading-tight">
               <p className="font-serif text-lg font-semibold tracking-tight text-slate-800">{branch.id === 'durban' ? 'Acrylic Game Durban' : 'Acrylic Game'}</p>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-sage-500">{branch.logoTagline ?? 'Hair &amp; Beauty Studio'}</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-sage-500">{branch.logoTagline ?? 'Hair, Nails & Beauty'}</p>
             </div>
           </a>
           <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
@@ -75,12 +76,13 @@ export default function Header({ logoUrl, branch, onChangeLocation, onOpenMobile
                 Instagram
               </a>
             )}
-            <a
-              href="#treatments"
+            <button
+              type="button"
+              onClick={onBook}
               className="rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-700"
             >
               Book Now
-            </a>
+            </button>
           </div>
         </div>
       </div>

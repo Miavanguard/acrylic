@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, Zap, Droplets, ScanLine, MessageCircle, Phone, ArrowLeft, Truck, Syringe } from 'lucide-react';
+import { Sparkles, Zap, Droplets, ScanLine, MessageCircle, Phone, ArrowLeft, Truck, Syringe, Calendar } from 'lucide-react';
 import {
   midstreamMobileInfo,
   midstreamMobilePricing,
-  buildMobileWhatsAppLink,
   buildPractitionerLink,
   type MobileServiceCategory,
 } from '@/data/midstreamMobile';
+import ServiceRow from '@/components/ServiceRow';
 
 interface MidstreamMobileProps {
   onBack: () => void;
+  onBook: (categoryId?: string, serviceName?: string) => void;
 }
 
 const tabIcons: Record<MobileServiceCategory['id'], typeof Zap> = {
@@ -19,7 +20,7 @@ const tabIcons: Record<MobileServiceCategory['id'], typeof Zap> = {
   'skin-tag': ScanLine,
 };
 
-export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
+export default function MidstreamMobile({ onBack, onBook }: MidstreamMobileProps) {
   const [active, setActive] = useState<MobileServiceCategory['id']>('facials');
   const current = midstreamMobilePricing.find((c) => c.id === active) ?? midstreamMobilePricing[0];
 
@@ -68,15 +69,14 @@ export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
             </p>
 
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href={buildMobileWhatsAppLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-green-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-green-600/20 transition-all hover:bg-green-700 hover:shadow-xl"
+              <button
+                type="button"
+                onClick={() => onBook()}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-7 py-3.5 font-semibold text-white shadow-lg shadow-slate-900/20 transition-all hover:bg-slate-700 hover:shadow-xl"
               >
-                <MessageCircle className="h-5 w-5" />
-                Book via WhatsApp
-              </a>
+                <Calendar className="h-5 w-5" />
+                Book Now
+              </button>
               <a
                 href={`tel:${midstreamMobileInfo.practitionerPhone}`}
                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-sage-400 bg-white px-7 py-3.5 font-semibold text-slate-800 transition-all hover:border-sage-600 hover:bg-sage-50"
@@ -105,7 +105,7 @@ export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
             <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-sage-700 shadow-sm">
               <Sparkles className="h-3.5 w-3.5" /> Treatment Menu
             </div>
-            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Services &amp; Pricing</h2>
+            <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Services & Pricing</h2>
           </div>
 
           {/* Filter tabs */}
@@ -143,29 +143,11 @@ export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
             </div>
             <div className="divide-y divide-sage-50">
               {current.items.map((item, i) => (
-                <div
+                <ServiceRow
                   key={`${current.id}-${i}`}
-                  className="flex flex-col gap-3 px-6 py-4 transition-colors hover:bg-[#F4FBF8] sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold text-slate-900">{item.name}</p>
-                    {item.description && (
-                      <p className="mt-0.5 text-sm leading-relaxed text-slate-600">{item.description}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="shrink-0 font-serif text-lg font-bold text-sage-700">{item.price}</span>
-                    <a
-                      href={buildMobileWhatsAppLink(item.name)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-green-600 px-3.5 py-2 text-xs font-semibold text-white transition-colors hover:bg-green-700"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" />
-                      Book
-                    </a>
-                  </div>
-                </div>
+                  item={item}
+                  onBook={() => onBook(current.id, item.name)}
+                />
               ))}
             </div>
           </div>
@@ -174,7 +156,7 @@ export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
           <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-sage-200 bg-white p-6 shadow-sm sm:flex-row">
             <div>
               <h3 className="font-serif text-lg font-semibold text-slate-900">
-                Injections &amp; Advanced Treatments
+                Injections & Advanced Treatments
               </h3>
               <p className="mt-1 text-sm text-slate-600">
                 Book directly with {midstreamMobileInfo.practitionerName} ({midstreamMobileInfo.practitionerRole}) for fat dissolving, skin tag removal, and injectables.
@@ -201,7 +183,7 @@ export default function MidstreamMobile({ onBack }: MidstreamMobileProps) {
           </div>
 
           <p className="mt-6 text-center text-xs font-medium text-slate-500">
-            * All prices are guidelines and require a consultation prior to treatment. Mobile service available within Midstream &amp; nearby areas.
+            * All prices are guidelines and require a consultation prior to treatment. Mobile service available within Midstream & nearby areas.
           </p>
         </div>
       </section>

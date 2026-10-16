@@ -1,14 +1,15 @@
-import { MapPin, Phone, MessageCircle, Clock, Instagram, Truck, Music2, Facebook } from 'lucide-react';
+import { MapPin, Phone, Calendar, Clock, Instagram, Truck, Music2, Facebook } from 'lucide-react';
 import type { Branch } from '@/data/locations';
-import { branches, buildWhatsAppLink } from '@/data/locations';
+import { branches } from '@/data/locations';
 
 interface LocationsDirectoryProps {
   currentId: string;
   onSelect: (id: string) => void;
   onOpenMobile: () => void;
+  onBook: (branchId: string) => void;
 }
 
-export default function LocationsDirectory({ currentId, onSelect, onOpenMobile }: LocationsDirectoryProps) {
+export default function LocationsDirectory({ currentId, onSelect, onOpenMobile, onBook }: LocationsDirectoryProps) {
   return (
     <section id="locations" className="bg-[#F4FBF8] py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4">
@@ -17,7 +18,9 @@ export default function LocationsDirectory({ currentId, onSelect, onOpenMobile }
             <MapPin className="h-3.5 w-3.5" /> Find Us
           </div>
           <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Our Salon Locations</h2>
-          <p className="mt-2 text-base leading-relaxed text-slate-600">Five branches across South Africa — find your nearest Acrylic Game.</p>
+          <p className="mt-2 text-base leading-relaxed text-slate-600">
+            {branches.length} {branches.length === 1 ? 'branch' : 'branches'} across South Africa — find your nearest Acrylic Game.
+          </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -77,14 +80,13 @@ export default function LocationsDirectory({ currentId, onSelect, onOpenMobile }
                 </div>
 
                 <div className="mt-auto flex gap-2">
-                  <a
-                    href={buildWhatsAppLink(b)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-green-600 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700"
+                  <button
+                    type="button"
+                    onClick={() => onBook(b.id)}
+                    className="inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700"
                   >
-                    <MessageCircle className="h-4 w-4" /> Book
-                  </a>
+                    <Calendar className="h-4 w-4" /> Book
+                  </button>
                   <button
                     onClick={() => onSelect(b.id)}
                     className={`inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${
@@ -111,13 +113,13 @@ export default function LocationsDirectory({ currentId, onSelect, onOpenMobile }
             </div>
 
             <div className="mb-4 space-y-2.5 text-sm leading-relaxed text-slate-700">
-              <p className="flex gap-2"><Truck className="mt-0.5 h-4 w-4 shrink-0 text-sage-500" /> We come to you in Midstream &amp; nearby areas</p>
+              <p className="flex gap-2"><Truck className="mt-0.5 h-4 w-4 shrink-0 text-sage-500" /> We come to you in Midstream & nearby areas</p>
               <p className="flex gap-2"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-sage-500" /> By appointment</p>
               <p className="flex gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-sage-500" /> WhatsApp: 083 617 2389</p>
               <p className="flex gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-sage-500" /> Theola (Injections): 083 501 4723</p>
             </div>
 
-            <p className="mb-4 text-sm text-slate-600">Advanced skin, laser &amp; body treatments delivered to your door.</p>
+            <p className="mb-4 text-sm text-slate-600">Advanced skin, laser & body treatments delivered to your door.</p>
 
             <div className="mt-auto flex gap-2">
               <button

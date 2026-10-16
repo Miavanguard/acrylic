@@ -7,11 +7,13 @@ export interface Special {
   salePrice: string;
 }
 
-export interface ServiceItem {
+export interface Service {
   name: string;
   description?: string;
   price: string;
 }
+
+export type ServiceItem = Service;
 
 export interface ServiceCategory {
   id: string;

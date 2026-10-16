@@ -25,7 +25,7 @@ export default function Gallery({ branch }: GalleryProps) {
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-blush-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-blush-700">
             <Sparkles className="h-3.5 w-3.5" /> Transformations
           </div>
-          <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Before &amp; After Gallery</h2>
+          <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Before & After Gallery</h2>
           <p className="mt-2 text-base leading-relaxed text-slate-600">Drag the slider to reveal each transformation at {branch.name}.</p>
         </div>
 

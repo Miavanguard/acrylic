@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Scissors, Info } from 'lucide-react';
 import type { Branch } from '@/data/locations';
+import ServiceRow from '@/components/ServiceRow';
 
 interface PricingMenuProps {
   branch: Branch;
+  onBookService: (categoryId: string, serviceName: string) => void;
 }
 
-export default function PricingMenu({ branch }: PricingMenuProps) {
+export default function PricingMenu({ branch, onBookService }: PricingMenuProps) {
   const categories = branch.pricing;
   const [active, setActive] = useState(categories[0]?.id ?? '');
 
   useEffect(() => {
     setActive(branch.pricing[0]?.id ?? '');
-  }, [branch.id]);
+  }, [branch.id, branch.pricing]);
 
   const current = categories.find((c) => c.id === active) ?? categories[0];
 
@@ -25,7 +27,7 @@ export default function PricingMenu({ branch }: PricingMenuProps) {
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-sage-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-sage-700">
             <Scissors className="h-3.5 w-3.5" /> Treatment Menu
           </div>
-          <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Pricing &amp; Services</h2>
+          <h2 className="font-serif text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Pricing & Services</h2>
           <p className="mt-2 text-base leading-relaxed text-slate-600">
             Showing prices for <span className="font-semibold text-sage-700">{branch.name}</span>
           </p>
@@ -60,18 +62,11 @@ export default function PricingMenu({ branch }: PricingMenuProps) {
           </div>
           <div className="divide-y divide-sage-50 bg-white">
             {current.items.map((item, i) => (
-              <div
+              <ServiceRow
                 key={`${branch.id}-${current.id}-${i}`}
-                className="flex items-center justify-between gap-4 px-6 py-4 transition-colors hover:bg-[#F4FBF8]"
-              >
-                <div className="min-w-0">
-                  <p className="font-semibold text-slate-900">{item.name}</p>
-                  {item.description && (
-                    <p className="mt-0.5 text-sm leading-relaxed text-slate-600">{item.description}</p>
-                  )}
-                </div>
-                <span className="shrink-0 font-serif text-lg font-bold text-sage-700">{item.price}</span>
-              </div>
+                item={item}
+                onBook={() => onBookService(current.id, item.name)}
+              />
             ))}
           </div>
         </div>
